@@ -41,21 +41,21 @@
 <body>
 <div id="content" class="row">
     <div class="col-lg-4">
-        <div id="menu-pushpin" class="overlay" style="display: block">
-            <div style="position:relative;height:30%;padding-bottom:56.25%">
+        <div id="menu-pushpin" class="overlay" style="height:calc(100vh);">
+            <div style="position:relative;padding-bottom:56.25%">
                 <iframe id="video" src="https://www.youtube.com/embed/RtU_mdL2vBM?ecver=2" width="640" height="360"
                         frameborder="0"
                         style="position:absolute;width:100%;height:100%;left:0" allowfullscreen></iframe>
             </div>
-            <div class="pre-scrollable">
-                <a style="height: 70%" class="twitter-timeline" href="https://twitter.com/Space_Station">Tweets by
+            <div class="pre-scrollable" style="max-height: calc(100vh); height:calc(100vh-353px);">
+                <a  class="twitter-timeline"  href="https://twitter.com/Space_Station">Tweets by
                     Space_Station</a>
                 <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
             </div>
         </div>
     </div>
     <div class="col-lg-8">
-    <div id="cesiumContainer" style="height: 900px;"></div></div>
+    <div id="cesiumContainer" style="height: calc(100vh);"></div></div>
 </div>
 
 
