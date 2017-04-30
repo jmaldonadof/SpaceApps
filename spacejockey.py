@@ -6,6 +6,10 @@ def hello():
     return "Hello World!"
 
 @app.route("/")
+def main():
+    return render_template('index.html')
+
+@app.route("/base")
 def base():
     return render_template("base.html")
 
