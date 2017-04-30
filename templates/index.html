@@ -10,6 +10,9 @@
           content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
     <title>Out Radar</title>
     <script src="./Build/Cesium/Cesium.js"></script>
+    <script src="./node_modules/moment/moment.js"></script>
+    <script src="./node_modules/satellite.js/dist/satellite.js"></script>
+    <script src="./node_modules/jspredict/jspredict.js"></script>
     <style>
         @import url(./Build/Cesium/Widgets/widgets.css);
 
@@ -63,9 +66,9 @@
     </div>
     <div class="col-lg-8" style="
     padding-right: 0px;
-    padding-left: 0px;
-">
-    <div id="cesiumContainer" style="height: calc(100vh);"></div></div>
+    padding-left: 0px;">
+      <div id="cesiumContainer" style="height: calc(100vh);"></div>
+    </div>
 </div>
 
 
@@ -102,21 +105,19 @@
     //Generate a random circular pattern with varying heights.
 
 
-    function computeFlight(lon, lat, pos){
+    function computeFlight(TLE){
       var property = new Cesium.SampledPositionProperty();
+      var date = new Date();
       for (var i = 0; i <= 360; i +=1) {
+          // Get current position from TLE and date
+          current_position = jspredict.observe(TLE, null, date);
           var time = Cesium.JulianDate.addSeconds(start, i*2.5 , new Cesium.JulianDate());
-          var position = null;
-          if(pos === 1){
-            position = Cesium.Cartesian3.fromDegrees(i-180, lat, 100);
-          }
-          else if (pos === 2) {
-            position = Cesium.Cartesian3.fromDegrees(lon, i-180, 100);
-          }
-          else{
-            position = Cesium.Cartesian3.fromDegrees(lon, i-180, 100);
-          }
-          
+
+          var position = Cesium.Cartesian3.fromDegrees(
+            current_position["longitude"],
+            current_position["latitude"],
+            100);
+
           property.addSample(time, position);
 
           //Also create a point for each sample we generate.
@@ -129,15 +130,17 @@
                   outlineWidth : 1
               }
           });
+          // Advance time
+          date.setSeconds(date.getSeconds() + 2.5);
       }
       return property;
     }
 
 
-    function addSatellite(lat, lon, pos){
+    function addSatellite(TLE){
 
       //Compute the entity position property.
-      var position = computeFlight(lat, lon, pos);
+      var position = computeFlight(TLE);
 
       //Actually create the entity
       var entity = viewer.entities.add({
@@ -172,10 +175,12 @@
 
       });
     }
-    
-    addSatellite(-180,0, 1);
-    addSatellite(-90,90, 2);
-    addSatellite(-50,-180, 1);
+    var issTLE = '0 ISS\n1 25544U 98067A   17118.86658832 +.00003789 +00000-0 +64904-4 0  9998\n2 25544 051.6427 284.1335 0005712 103.4876 046.8313 15.53931139054089';
+    var aquaTLE = '0 AQUA\n1 27424U 02022A   17118.92920056 +.00000140 +00000-0 +41123-4 0  9996\n2 27424 098.2013 060.9656 0000079 026.8795 023.5764 14.57120412797051';
+    var terraTLE = '0 TERRA\n1 25994U 99068A   17118.76280116 +.00000128 +00000-0 +38489-4 0  9997\n2 25994 098.2110 194.5047 0000813 099.8748 260.2521 14.57108495923476';
+    addSatellite(issTLE);
+    addSatellite(aquaTLE);
+    addSatellite(terraTLE);
 
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
