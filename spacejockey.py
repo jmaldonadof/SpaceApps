@@ -2,8 +2,11 @@ from flask import Flask
 from flask import render_template
 import json
 import ephem
+from flask import Flask, render_template
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
+CORS(app)
 
 lines_iss =[]
 lines_iss.append('1 25544U 98067A   17118.86658832 +.00003789 +00000-0 +64904-4 0  9998')
