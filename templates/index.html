@@ -77,7 +77,7 @@
 
     //Set bounds of our simulation time
     var start = Cesium.JulianDate.fromDate(new Date(2017, 4, 30, 16));
-    var stop = Cesium.JulianDate.addSeconds(start, 360, new Cesium.JulianDate());
+    var stop = Cesium.JulianDate.addSeconds(start, 3600, new Cesium.JulianDate());
 
     //Make sure viewer is at the desired time.
     viewer.clock.startTime = start.clone();
@@ -95,7 +95,7 @@
     function computeFlight(lon, lat){
       var property = new Cesium.SampledPositionProperty();
       for (var i = 0; i <= 360; i +=1) {
-          var time = Cesium.JulianDate.addSeconds(start, i, new Cesium.JulianDate());
+          var time = Cesium.JulianDate.addSeconds(start, i*10 , new Cesium.JulianDate());
           var position = Cesium.Cartesian3.fromDegrees(i-180, lat, 100);
           property.addSample(time, position);
 
