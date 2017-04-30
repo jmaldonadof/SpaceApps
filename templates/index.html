@@ -8,7 +8,7 @@
     <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
     <meta name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
-    <title>Hello World!</title>
+    <title>Out Radar</title>
     <script src="./Build/Cesium/Cesium.js"></script>
     <style>
         @import url(./Build/Cesium/Widgets/widgets.css);
@@ -33,6 +33,13 @@
              color: white;
              display: inline-block;
          }
+         .cesium-viewer-animationContainer,
+         .cesium-viewer-timelineContainer,
+         .cesium-viewer-fullscreenContainer,
+         .cesium-viewer-toolbar,
+         .cesium-viewer-bottom
+         { display: none; }
+
     </style>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -54,7 +61,10 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-8">
+    <div class="col-lg-8" style="
+    padding-right: 0px;
+    padding-left: 0px;
+">
     <div id="cesiumContainer" style="height: calc(100vh);"></div></div>
 </div>
 
@@ -160,9 +170,7 @@
             width : 1
         }
 
-
       });
-
     }
     
     addSatellite(-180,0, 1);
