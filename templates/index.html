@@ -72,8 +72,29 @@
         return property;
     }
 
+    function computeFlight(lon, lat){
+      var property = new Cesium.SampledPositionProperty();
+      for (var i = 0; i <= 360; i += 1) {
+          var time = Cesium.JulianDate.addSeconds(start, i, new Cesium.JulianDate());
+          var position = Cesium.Cartesian3.fromDegrees(i-180, lat, 100);
+          property.addSample(time, position);
+
+          //Also create a point for each sample we generate.
+          viewer.entities.add({
+              position : position,
+              point : {
+                  pixelSize : 8,
+                  color : Cesium.Color.TRANSPARENT,
+                  outlineColor : Cesium.Color.GREEN,
+                  outlineWidth : 1
+              }
+          });
+      }
+      return property;
+    }
+
     //Compute the entity position property.
-    var position = computeCirclularFlight(-112.110693, 36.0994841, 0.03);
+    var position = computeFlight(-180, 0);
 
     //Actually create the entity
     var entity = viewer.entities.add({
@@ -93,7 +114,7 @@
         //Load the Cesium plane model to represent the entity
         model : {
             uri : './SpaceStation/model.gltf',
-            minimumPixelSize : 64
+            minimumPixelSize : 200
         },
 
         //Show the path as a pink line sampled in 1 second increments.
