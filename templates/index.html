@@ -102,11 +102,21 @@
     //Generate a random circular pattern with varying heights.
 
 
-    function computeFlight(lon, lat){
+    function computeFlight(lon, lat, pos){
       var property = new Cesium.SampledPositionProperty();
       for (var i = 0; i <= 360; i +=1) {
-          var time = Cesium.JulianDate.addSeconds(start, i*10 , new Cesium.JulianDate());
-          var position = Cesium.Cartesian3.fromDegrees(i-180, lat, 100);
+          var time = Cesium.JulianDate.addSeconds(start, i*2.5 , new Cesium.JulianDate());
+          var position = null;
+          if(pos === 1){
+            position = Cesium.Cartesian3.fromDegrees(i-180, lat, 100);
+          }
+          else if (pos === 2) {
+            position = Cesium.Cartesian3.fromDegrees(lon, i-180, 100);
+          }
+          else{
+            position = Cesium.Cartesian3.fromDegrees(lon, i-180, 100);
+          }
+          
           property.addSample(time, position);
 
           //Also create a point for each sample we generate.
@@ -123,11 +133,14 @@
       return property;
     }
 
-    //Compute the entity position property.
-    var position = computeFlight(-180, 0);
 
-    //Actually create the entity
-    var entity = viewer.entities.add({
+    function addSatellite(lat, lon, pos){
+
+      //Compute the entity position property.
+      var position = computeFlight(lat, lon, pos);
+
+      //Actually create the entity
+      var entity = viewer.entities.add({
 
         //Set the entity availability to the same interval as the simulation time.
         availability : new Cesium.TimeIntervalCollection([new Cesium.TimeInterval({
@@ -157,8 +170,12 @@
             width : 1
         }
 
-    });
-
+      });
+    }
+    
+    addSatellite(-180,0, 1);
+    addSatellite(-90,90, 2);
+    addSatellite(-50,-180, 1);
 
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
